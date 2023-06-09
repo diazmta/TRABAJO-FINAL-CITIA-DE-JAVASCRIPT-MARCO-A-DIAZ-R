@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Juego de Adivinanzas y Preguntas sobre Argentina</title>
+  <style>
+    body {
+      background-color: #F0F7FF;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #03254E;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    p {
+      color: #03254E;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .juego-container {
+      background-color: #C1D8F7;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+    }
+
+    .juego-container h2 {
+      color: #03254E;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .pregunta-container,
+    .resultado-container {
+      display: none;
+    }
+
+    .respuesta-input {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #03254E;
+    }
+
+    .boton {
+      background-color: #03254E;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .boton-reiniciar {
+      background-color: #03254E;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .mensaje-resultado {
+      color: #03254E;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .mensaje-final {
+      color: #03254E;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="juego-container">
+      <h2>Juego de Adivinanzas y Preguntas sobre Argentina</h2>
+      <div id="adivinanza-container">
+        <h3>Adivinanza</h3>
+        <p id="texto-adivinanza"></p>
+        <input type="text" id="respuesta-input" class="respuesta-input" placeholder="Escribe tu respuesta">
+        <button id="verificar-btn" class="boton">Verificar</button>
+        <button id="siguiente-btn" class="boton">Siguiente Adivinanza</button>
+        <p id="mensaje-resultado" class="mensaje-resultado"></p>
+      </div>
+      <div id="resultado-container">
+        <h3>Resultado Final</h3>
+        <p id="mensaje-final" class="mensaje-final"></p>
+        <button id="reiniciar-btn" class="boton-reiniciar">Reiniciar Juego</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var adivinanzas = [
+      {
+        pregunta: "Es el país más austral de América del Sur.",
+        respuesta: "Argentina"
+      },
+      {
+        pregunta: "Es la ciudad más poblada de Argentina.",
+        respuesta: "Buenos Aires"
+      },
+      {
+        pregunta: "Es una famosa formación rocosa ubicada en la provincia de Salta.",
+        respuesta: "El Cerro de los Siete Colores"
+      }
+    ];
+
+    var adivinanzaActual = 0;
+    var puntuacionAdivinanzas = 0;
+
+    var juegoContainer = document.querySelector(".juego-container");
+    var adivinanzaContainer = document.getElementById("adivinanza-container");
+    var resultadoContainer = document.getElementById("resultado-container");
+
+    var textoAdivinanza = document.getElementById("texto-adivinanza");
+    var respuestaInput = document.getElementById("respuesta-input");
+    var mensajeResultado = document.getElementById("mensaje-resultado");
+    var mensajeFinal = document.getElementById("mensaje-final");
+    var verificarBtn = document.getElementById("verificar-btn");
+    var siguienteBtn = document.getElementById("siguiente-btn");
+    var reiniciarBtn = document.getElementById("reiniciar-btn");
+
+    function mostrarAdivinanza() {
+      var adivinanza = adivinanzas[adivinanzaActual];
+
+      textoAdivinanza.textContent = adivinanza.pregunta;
+      respuestaInput.value = "";
+      mensajeResultado.textContent = "";
+
+      adivinanzaContainer.style.display = "block";
+      resultadoContainer.style.display = "none";
+    }
+
+    function verificarRespuesta() {
+      var respuestaIngresada = respuestaInput.value.toLowerCase().trim();
+
+      if (respuestaIngresada === adivinanzas[adivinanzaActual].respuesta.toLowerCase()) {
+        puntuacionAdivinanzas++;
+        mensajeResultado.textContent = "¡Respuesta correcta!";
+      } else {
+        mensajeResultado.textContent = "Respuesta incorrecta. La respuesta correcta es: " + adivinanzas[adivinanzaActual].respuesta;
+      }
+
+      siguienteBtn.style.display = "block";
+      verificarBtn.style.display = "none";
+    }
+
+    function mostrarSiguienteAdivinanza() {
+      adivinanzaActual++;
+
+      if (adivinanzaActual < adivinanzas.length) {
+        mostrarAdivinanza();
+      } else {
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      adivinanzaContainer.style.display = "none";
+      resultadoContainer.style.display = "block";
+
+      mensajeFinal.textContent = "¡Felicidades! Has respondido correctamente " + puntuacionAdivinanzas + " de " + adivinanzas.length + " adivinanzas.";
+
+      reiniciarBtn.style.display = "block";
+      siguienteBtn.style.display = "none";
+    }
+
+    function reiniciarJuego() {
+      adivinanzaActual = 0;
+      puntuacionAdivinanzas = 0;
+
+      mostrarAdivinanza();
+
+      reiniciarBtn.style.display = "none";
+    }
+
+    mostrarAdivinanza();
+
+    verificarBtn.addEventListener("click", verificarRespuesta);
+    siguienteBtn.addEventListener("click", mostrarSiguienteAdivinanza);
+    reiniciarBtn.addEventListener("click", reiniciarJuego);
+  </script>
+</body>
+</html>
+

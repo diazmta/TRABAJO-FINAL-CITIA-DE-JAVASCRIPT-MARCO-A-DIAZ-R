@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
   <title>Juego de Adivinanzas y Preguntas sobre Argentina</title>
   <style>
     body {
@@ -200,4 +201,3 @@
   </script>
 </body>
 </html>
-
